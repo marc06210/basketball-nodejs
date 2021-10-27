@@ -1,12 +1,12 @@
 import {
   GraphQLID,
-    GraphQLNonNull,
-    GraphQLObjectType,
-    GraphQLString,
-  } from 'graphql';
-  
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
+
 import Player from 'src/entities/player';
-  
+
 const player = new GraphQLObjectType({
   name: 'Player',
   fields: () => ({

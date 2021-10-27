@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express, { Request, Response } from "express";
 import { graphqlHTTP } from "express-graphql";
 import schema from "./schema";
 
@@ -30,12 +30,12 @@ createConnection({
 
     //graphql playground setup code
     app.use(
-            "/graphql",
-            graphqlHTTP({
-                context: context,
-                schema,
-                graphiql: true
-            })
+        "/graphql",
+        graphqlHTTP({
+            context: context,
+            schema,
+            graphiql: true
+        })
     );
 
     app.listen(PORT, () => {
