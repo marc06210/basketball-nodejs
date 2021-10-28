@@ -6,6 +6,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Player } from "./entities/player"
 import Context from "./context/context";
+import { Team } from "./entities/team";
 
 createConnection({
     type: "postgres",
@@ -17,14 +18,15 @@ createConnection({
     entities: [
         __dirname + "/entities/*.js"
     ],
-    synchronize: true,
-    logging: true
+    synchronize: false,
+    logging: false
 }).then(connection => {
     // here you can start to work with your entities
-    let playerRepository = connection.getRepository<Player>(Player)
     let context: Context = {
+        connection: connection,
         repositories: {
-            player: playerRepository
+            player: connection.getRepository<Player>(Player),
+            team: connection.getRepository<Team>(Team),
         }
     };
 
@@ -34,7 +36,17 @@ createConnection({
         graphqlHTTP({
             context: context,
             schema,
-            graphiql: true
+            graphiql: true,
+            customFormatErrorFn: (error) => {
+                const params = {
+                    message: error.message,
+                    locations: error.locations,
+                    stack: error.stack
+                };
+                console.log(`message: "${error.message}"`);
+                // Optional ${request.body.operationName} ${request.body.variables}
+                return (params);
+            },
         })
     );
 
